@@ -5,7 +5,7 @@ import { Banner, ListSelector, PlaylistCards, Statusbar } from './components'
 /*
     This is our application's top-level component.
     
-    @author McKilla Gorilla
+    @author Zian Shang
 */
 const App = () => {
     return (

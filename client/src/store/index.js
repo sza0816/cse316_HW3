@@ -191,6 +191,27 @@ export const useGlobalStore = () => {
         return store.currentList.songs.length;
     }
 
+    store.createNewList=function(){
+        async function asyncCreateNewList(){
+            let newListTitle="Untitled"+store.newListCounter;
+            let payload={name:newListTitle,songs:[]};
+            const response=await api.createPlaylist(payload);
+            if(response.data.success){
+                let newList=response.data.playlist;
+                storeReducer({
+                    type: GlobalStoreActionType.CREATE_NEW_LIST,
+                    payload:newList
+                });
+
+                store.history.push("/playlist/"+newList._id);
+            }
+            else{
+                console.log("create new list failed.");
+            }
+        }
+        asyncCreateNewList();
+    }
+
     store.updateCurrentList = function() {
         async function asyncUpdateCurrentList() {
             const response = await api.updatePlaylistById(store.currentList._id, store.currentList);

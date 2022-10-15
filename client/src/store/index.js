@@ -1,7 +1,11 @@
+import AddSong_Transaction from '../transactions/AddSong_Transaction';
+
 import { createContext, useState } from 'react'
 import jsTPS from '../common/jsTPS'
 import api from '../api'
+
 export const GlobalStoreContext = createContext({});
+
 /*
     This is our global data store. Note that it uses the Flux design pattern,
     which makes use of things like actions and reducers. 
@@ -266,6 +270,37 @@ export const useGlobalStore = () => {
             }
         }
         asyncDeleteList(id);
+    }
+
+    // this function adds a add-song transaction to the stack
+    store.addAddSongTransaction=function(){
+        let oldSong=null;
+        let index;
+        if(store.currentList!==null){
+            index=store.currentList.songs.length;
+            let transaction=new AddSong_Transaction(store, index,oldSong);
+            tps.addTransaction(transaction);
+        }
+    }
+
+    store.addSong=function(songId, songCard){
+        let newCurrentList= store.currentList;
+
+        console.log(newCurrentList.songs);
+        if(songCard==null){
+            var newSong={
+                "title": "Untitled",
+                "artist": "Unknown",
+                "youTubeId": "dQw4w9WgXcQ"
+            };
+            newCurrentList.songs.push(newSong);
+        }
+
+        else{
+            newCurrentList.songs.splice(songId,0,songCard);       
+        }
+
+        store.updateCurrentList()
     }
 
     store.undo = function () {

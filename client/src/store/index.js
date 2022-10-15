@@ -18,6 +18,7 @@ export const GlobalStoreActionType = {
     LOAD_ID_NAME_PAIRS: "LOAD_ID_NAME_PAIRS",
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
+    MARK_LIST_FOR_DELETION:"MARK_LIST_FOR_DELETION"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -31,7 +32,8 @@ export const useGlobalStore = () => {
         idNamePairs: [],
         currentList: null,
         newListCounter: 0,
-        listNameActive: false
+        listNameActive: false,
+        listMarkedForDeletion:null
     });
 
     // HERE'S THE DATA STORE'S REDUCER, IT MUST
@@ -45,7 +47,8 @@ export const useGlobalStore = () => {
                     idNamePairs: payload.idNamePairs,
                     currentList: payload.playlist,
                     newListCounter: store.newListCounter,
-                    listNameActive: false
+                    listNameActive: false,
+                    listMarkedForDeletion:null
                 });
             }
             // STOP EDITING THE CURRENT LIST
@@ -54,7 +57,8 @@ export const useGlobalStore = () => {
                     idNamePairs: store.idNamePairs,
                     currentList: null,
                     newListCounter: store.newListCounter,
-                    listNameActive: false
+                    listNameActive: false,
+                    listMarkedForDeletion:null
                 })
             }
             // CREATE A NEW LIST
@@ -63,7 +67,8 @@ export const useGlobalStore = () => {
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
                     newListCounter: store.newListCounter + 1,
-                    listNameActive: false
+                    listNameActive: false,
+                    listMarkedForDeletion:null
                 })
             }
             // GET ALL THE LISTS SO WE CAN PRESENT THEM
@@ -72,7 +77,8 @@ export const useGlobalStore = () => {
                     idNamePairs: payload,
                     currentList: null,
                     newListCounter: store.newListCounter,
-                    listNameActive: false
+                    listNameActive: false,
+                    listMarkedForDeletion:null
                 });
             }
             // PREPARE TO DELETE A LIST
@@ -81,7 +87,8 @@ export const useGlobalStore = () => {
                     idNamePairs: store.idNamePairs,
                     currentList: null,
                     newListCounter: store.newListCounter,
-                    listNameActive: false
+                    listNameActive: false,
+                    listMarkedForDeletion:payload
                 });
             }
             // UPDATE A LIST
@@ -90,7 +97,8 @@ export const useGlobalStore = () => {
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
                     newListCounter: store.newListCounter,
-                    listNameActive: false
+                    listNameActive: false,
+                    listMarkedForDeletion:null
                 });
             }
             // START EDITING A LIST NAME
@@ -99,7 +107,8 @@ export const useGlobalStore = () => {
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
                     newListCounter: store.newListCounter,
-                    listNameActive: true
+                    listNameActive: true,
+                    listMarkedForDeletion:null
                 });
             }
             default:
@@ -223,6 +232,45 @@ export const useGlobalStore = () => {
             }
         }
         asyncUpdateCurrentList();
+    }
+    // this function marks the current list in order to delete
+    store.markListForDeletion = function(id){
+        console.log("entered mark list");
+        storeReducer({
+            type: GlobalStoreActionType.MARK_LIST_FOR_DELETION,
+            payload: id
+        });
+        store.showDeleteListModal();
+    }
+
+    store.showDeleteListModal = function(){
+        let modal = document.getElementById("delete-list-modal");
+        modal.classList.add("is-visible");
+    }
+
+    store.hideDeleteListModal=function(){
+        let modal = document.getElementById("delete-list-modal");
+        modal.classList.remove("is-visible");
+    }
+
+    store.deleteMarkedList=function(){
+        console.log("here enters the store delete marked list",store.listMarkedForDeletion);
+        store.deleteList(store.listMarkedForDeletion);
+        store.hideDeleteListModal();
+    }
+
+    store.deleteList=function(id){
+        console.log("here enters the actual deletelist function");
+        async function asyncDeleteList(id){
+            const response = await api.deleteListById(id);
+            console.log(response);
+            if (response.data.success) {
+                console.log("response successes.")
+                store.loadIdNamePairs();
+                store.history.push("/");
+            }
+        }
+        asyncDeleteList(id);
     }
 
     store.undo = function () {

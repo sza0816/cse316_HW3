@@ -75,8 +75,10 @@ body {
   background-color: var(--swatch-primary);
 }
 #playlist-selector-heading{
-  position:absolute;
+  position:sticky;
   background-color: transparent;
+  display: flex;
+  align-items: center;
 }
 
 .playlister-button, .playlister-button-disabled {
@@ -204,16 +206,14 @@ input {
   padding: 1rem;
 }
 
-.modal-header,
-.modal-footer {
-  background: var(--lightgray);
+.modal-header{
+  background: var(--swatch-accent);
 }
 
 .modal-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: dotted;
 }
 
 .modal-header,
@@ -238,8 +238,9 @@ input {
   float:right;
 }
 
-#confirm-cancel-container {
+.confirm-cancel-container {
   text-align:center;
+  background-color: lightgray;
 }
 
 /* ANIMATIONS

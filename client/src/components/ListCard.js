@@ -25,6 +25,17 @@ function ListCard(props) {
             store.setCurrentList(_id);
         }
     }
+    // this function handles deleting a playlist after clicking the X button
+    function handleDeleteList(event){
+        if(!event.target.disabled){
+            let _id=event.target.id;
+            if(_id.indexOf('delete-list-')>=0){
+                _id=(""+_id).substring("delete-list-".length);
+            }
+            //mark the current list
+            store.markListForDeletion(_id);
+        }
+    }
 
     function handleToggleEdit(event) {
         event.stopPropagation();
@@ -75,6 +86,7 @@ function ListCard(props) {
                 type="button"
                 id={"delete-list-" + idNamePair._id}
                 className="list-card-button"
+                onClick={handleDeleteList}
                 value={"\u2715"}
             />
             <input

@@ -76,7 +76,6 @@ body {
 }
 #playlist-selector-heading{
   position:sticky;
-  background-color: transparent;
   display: flex;
   align-items: center;
 }
@@ -87,7 +86,7 @@ body {
   float:left;
   color: black;
   cursor: pointer;
-  opacity: 85%;
+  opacity: 100%;
   background-color: var(--swatch-primary);
 }
 

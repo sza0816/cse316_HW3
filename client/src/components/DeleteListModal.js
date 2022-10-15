@@ -9,7 +9,6 @@ function DeleteListModal(){
     }
 
     function deleteListCallback(event){
-        console.log("here enters the delete marked list call back.");
         store.deleteMarkedList();
     }
 

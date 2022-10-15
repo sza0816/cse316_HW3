@@ -13,6 +13,8 @@ function EditToolbar() {
 
     let enabledButtonClass = "playlister-button";
 
+    //foolproof design
+
     function handleUndo() {
         store.undo();
     }

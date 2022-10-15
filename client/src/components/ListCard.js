@@ -20,13 +20,16 @@ function ListCard(props) {
             let _id = event.target.id;
             if (_id.indexOf('list-card-text-') >= 0)
                 _id = ("" + _id).substring("list-card-text-".length);
-
+            else if(_id.includes('delete-list-')   && _id.indexOf('delete-list-')>=0)
+                _id = (""+_id).substring("delete-list-".length);
             // CHANGE THE CURRENT LIST
+            console.log("id: "+_id);
             store.setCurrentList(_id);
         }
     }
     // this function handles deleting a playlist after clicking the X button
     function handleDeleteList(event){
+        event.stopPropagation();
         if(!event.target.disabled){
             let _id=event.target.id;
             if(_id.indexOf('delete-list-')>=0){

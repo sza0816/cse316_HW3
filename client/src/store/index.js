@@ -235,7 +235,6 @@ export const useGlobalStore = () => {
     }
     // this function marks the current list in order to delete
     store.markListForDeletion = function(id){
-        console.log("entered mark list");
         storeReducer({
             type: GlobalStoreActionType.MARK_LIST_FOR_DELETION,
             payload: id
@@ -254,18 +253,14 @@ export const useGlobalStore = () => {
     }
 
     store.deleteMarkedList=function(){
-        console.log("here enters the store delete marked list",store.listMarkedForDeletion);
         store.deleteList(store.listMarkedForDeletion);
         store.hideDeleteListModal();
     }
 
     store.deleteList=function(id){
-        console.log("here enters the actual deletelist function");
         async function asyncDeleteList(id){
             const response = await api.deleteListById(id);
-            console.log(response);
             if (response.data.success) {
-                console.log("response successes.")
                 store.loadIdNamePairs();
                 store.history.push("/");
             }

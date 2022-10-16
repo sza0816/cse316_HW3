@@ -78,6 +78,7 @@ body {
   position:sticky;
   display: flex;
   align-items: center;
+  font-size: 28px;
 }
 
 .playlister-button, .playlister-button-disabled {

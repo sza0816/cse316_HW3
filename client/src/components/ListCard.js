@@ -18,10 +18,12 @@ function ListCard(props) {
     function handleLoadList(event) {
         if (!event.target.disabled) {
             let _id = event.target.id;
-            if (_id.indexOf('list-card-text-') >= 0)
+            if (_id.includes('list-card-text-') && _id.indexOf('list-card-text-') >= 0)
                 _id = ("" + _id).substring("list-card-text-".length);
-            else if(_id.includes('delete-list-')   && _id.indexOf('delete-list-')>=0)
+            else if(_id.includes('delete-list-') && _id.indexOf('delete-list-')>=0)
                 _id = (""+_id).substring("delete-list-".length);
+            // else if(_id.includes('remove-song-') && _id.indexOf('remove-song-')>=0)
+            //     _id = (""+_id).substring("remove-song-".length);
             // CHANGE THE CURRENT LIST
             console.log("id: "+_id);
             store.setCurrentList(_id);

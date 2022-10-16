@@ -2,7 +2,8 @@ import { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import SongCard from './SongCard.js'
 import { GlobalStoreContext } from '../store'
-import DeleteListModal from './DeleteListModal.js'
+import RemoveSongModal from './RemoveSongModal.js'
+
 /*
     This React component lets us edit a loaded list, which only
     happens when we are on the proper route.
@@ -12,11 +13,14 @@ import DeleteListModal from './DeleteListModal.js'
 function PlaylistCards() {
     const { store } = useContext(GlobalStoreContext);
     store.history = useHistory();
+    console.log(store.currentList);
+    console.log(store.currentList.songs);
 
     return (
         <div id="playlist-cards">
         {
             store.currentList.songs.map((song, index) => (
+                
                 <SongCard
                     id={'playlist-song-' + (index)}
                     key={'playlist-song-' + (index)}
@@ -25,7 +29,7 @@ function PlaylistCards() {
                 />
             ))
         }
-        <DeleteListModal/>
+        <RemoveSongModal/>
         </div>
     )
 }

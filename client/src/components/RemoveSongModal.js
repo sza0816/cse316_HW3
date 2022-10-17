@@ -8,7 +8,6 @@ function RemoveSongModal(){
     let index;
     if(store.currentList.songs[0]){
         index=Number(store.songMarkedForDeletion);
-        console.log(index);
         name=store.currentList.songs[index].title;
     }
 

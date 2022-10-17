@@ -1,7 +1,6 @@
 import { useContext } from 'react'
 import { GlobalStoreContext } from '../store'
 import { useHistory } from 'react-router-dom'
-import jsTPS, { jsTPS_Transaction } from '../common/jsTPS';
 /*
     This toolbar is a functional React component that
     manages the undo/redo/close buttons.
@@ -24,7 +23,6 @@ function EditToolbar() {
     function handleClose() {
         history.push("/");
         store.closeCurrentList();
-        
     }
 
     // this function handles the add song click

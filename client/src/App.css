@@ -200,6 +200,7 @@ input {
   border-width: 5px;
   border-radius: 10px;
   border-style: groove;
+  border-color: black;
 }
 
 .modal-dialog > * {
@@ -219,6 +220,7 @@ input {
 .modal-header,
 .modal-close {
   font-size: 1.5rem;
+   color: black;
 }
 
 .modal p + p {
@@ -232,6 +234,7 @@ input {
 
 .dialog-header {
   font-size: 24pt;
+  color: black;
 }
 
 #close-modal-button {
@@ -241,6 +244,22 @@ input {
 .confirm-cancel-container {
   text-align:center;
   background-color: lightgray;
+}
+
+/* ---------------style for edit song modal------------- */
+.center-content-box{
+  display: flex;
+  flex-direction: row;
+}
+.edit-song-label{
+  flex: 0.7;
+  font-size: 27pt;
+}
+
+.edit-song-input{
+  flex: 0.5;
+  margin: 10px 2px;
+  font-size: 18pt;
 }
 
 /* ANIMATIONS

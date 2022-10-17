@@ -13,8 +13,6 @@ import RemoveSongModal from './RemoveSongModal.js'
 function PlaylistCards() {
     const { store } = useContext(GlobalStoreContext);
     store.history = useHistory();
-    console.log(store.currentList);
-    console.log(store.currentList.songs);
 
     return (
         <div id="playlist-cards">

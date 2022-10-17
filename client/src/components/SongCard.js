@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 import RemoveSongModal from './RemoveSongModal';
+import EditSongModal from './EditSongModal';
 
 function SongCard(props) {
     const { store } = useContext(GlobalStoreContext);
@@ -12,13 +13,24 @@ function SongCard(props) {
         event.stopPropagation();
         if(!event.target.disabled){
             let _id = event.target.id;
-            console.log("song _id for deletion:"+_id);
             if(_id.indexOf('remove-song-')>=0){
-                _id = (""+_id).substring("remove-song-".length);}
-
+                _id = (""+_id).substring("remove-song-".length);
+            }
             store.markSongForDeletion(_id);
 
         }
+    }
+    function handleDoubleClick(event){
+        console.log("handles double click.");
+        event.stopPropagation();
+        if(event.detail===2 && !event.target.disabled){
+            let _id=event.target.id;
+            if(_id.indexOf('song-')>=0){
+                _id=(""+_id).substring("song-".length,"song-".length+1);
+            }
+            store.markSongForEdition(_id);
+            console.log(_id);
+        }  
     }
 
     return (
@@ -26,6 +38,7 @@ function SongCard(props) {
             key={index}
             id={'song-' + index + '-card'}
             className={cardClass}
+            onClick={handleDoubleClick}
         >
             {index + 1}.
             <a
@@ -42,6 +55,7 @@ function SongCard(props) {
                 onClick={handleRemoveSong}
             />
             <RemoveSongModal/>
+            <EditSongModal/>
         </div>
     );
 }

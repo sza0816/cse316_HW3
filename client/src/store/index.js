@@ -165,6 +165,16 @@ export const useGlobalStore = () => {
                 return store;
         }
     }
+
+    //define some basic conditions for foolproof design
+    store.canAddSong=store.currentList!=null;
+    store.canUndo=tps.hasTransactionToUndo();
+    store.canRedo=tps.hasTransactionToRedo();
+    store.canClose=store.currentList!=null;
+    store.modalVisible = store.listMarkedForDeletion!=null 
+                      || store.songMarkedForDeletion!=null 
+                      || store.songMarkedForEdition != null;
+
     // THESE ARE THE FUNCTIONS THAT WILL UPDATE OUR STORE AND
     // DRIVE THE STATE OF THE APPLICATION. WE'LL CALL THESE IN 
     // RESPONSE TO EVENTS INSIDE OUR COMPONENTS.
@@ -457,7 +467,6 @@ export const useGlobalStore = () => {
             payload: null
         });
     }
-
     // THIS GIVES OUR STORE AND ITS REDUCER TO ANY COMPONENT THAT NEEDS IT
     return { store, storeReducer };
 }

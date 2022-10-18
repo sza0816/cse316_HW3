@@ -10,9 +10,36 @@ import { useHistory } from 'react-router-dom'
 function EditToolbar() {
     const { store } = useContext(GlobalStoreContext);
     const history = useHistory();
-    let enabledButtonClass = "playlister-button";
+    let addSongClass = "playlister-button";
+    let undoClass="playlister-button";
+    let redoClass="playlister-button";
+    let closeClass="playlister-button";
 
     //foolproof design
+    if(!store.canAddSong){
+        addSongClass+=" playlister-button-disabled";
+        undoClass+=" playlister-button-disabled";
+        redoClass+=" playlister-button-disabled";
+    }
+
+    if(!store.canUndo){
+        undoClass+=" playlister-button-disabled";
+    }
+
+    if(!store.canRedo){
+        redoClass+=" playlister-button-disabled";
+    }
+
+    if(!store.canClose){
+        closeClass+=" playlister-button-disabled";
+    }
+
+    if(store.modalVisible){
+        addSongClass+=" playlister-button-disabled";
+        undoClass+=" playlister-button-disabled";
+        redoClass+=" playlister-button-disabled";
+        closeClass+=" playlister-button-disabled";
+    }
 
     function handleUndo() {
         store.undo();
@@ -41,7 +68,7 @@ function EditToolbar() {
                 id='add-song-button'
                 disabled={editStatus}
                 value="+"
-                className={enabledButtonClass}
+                className={addSongClass}
                 onClick={handleAddSong}
             />
             <input
@@ -49,7 +76,7 @@ function EditToolbar() {
                 id='undo-button'
                 disabled={editStatus}
                 value="⟲"
-                className={enabledButtonClass}
+                className={undoClass}
                 onClick={handleUndo}
             />
             <input
@@ -57,7 +84,7 @@ function EditToolbar() {
                 id='redo-button'
                 disabled={editStatus}
                 value="⟳"
-                className={enabledButtonClass}
+                className={redoClass}
                 onClick={handleRedo}
             />
             <input
@@ -65,7 +92,7 @@ function EditToolbar() {
                 id='close-button'
                 disabled={editStatus}
                 value="&#x2715;"
-                className={enabledButtonClass}
+                className={closeClass}
                 onClick={handleClose}
             />
         </span>);

@@ -34,7 +34,7 @@ const ListSelector = () => {
     if(store.modalVisible || store.listNameActive){
         addListClass+=" playlister-button-disabled";
     }
-    
+
     return (
         <div id="playlist-selector">
             <div id="list-selector-list">

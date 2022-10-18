@@ -55,7 +55,7 @@ export const useGlobalStore = () => {
             case GlobalStoreActionType.CHANGE_LIST_NAME: {
                 return setStore({
                     idNamePairs: payload.idNamePairs,
-                    currentList: payload.playlist,
+                    currentList: null,
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listMarkedForDeletion:null,
@@ -310,6 +310,10 @@ export const useGlobalStore = () => {
     store.hideDeleteListModal=function(){
         let modal = document.getElementById("delete-list-modal");
         modal.classList.remove("is-visible");
+        storeReducer({
+            type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
+            payload: {}
+        });
     }
     store.deleteMarkedList=function(){
         store.deleteList(store.listMarkedForDeletion);
@@ -371,6 +375,10 @@ export const useGlobalStore = () => {
     store.hideRemoveSongModal=function(){
         let modal=document.getElementById("remove-song-modal");
         modal.classList.remove("is-visible");
+        storeReducer({
+            type: GlobalStoreActionType.SET_CURRENT_LIST,
+            payload: store.currentList
+        });
     }
     store.addRemoveSongTransaction=function(){
         let index=Number(store.songMarkedForDeletion);
@@ -413,6 +421,11 @@ export const useGlobalStore = () => {
     store.hideEditSongModal=function(){
         let modal=document.getElementById("edit-song-modal");
         modal.classList.remove("is-visible");
+        storeReducer({
+            type: GlobalStoreActionType.SET_CURRENT_LIST,
+            payload: store.currentList
+        });
+        console.log(store.modalVisible);
     }
     store.addEditSongTransaction=function(){
         let index=Number(store.songMarkedForEdition);

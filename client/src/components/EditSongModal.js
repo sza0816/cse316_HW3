@@ -7,7 +7,6 @@ function EditSongModal(){
     let title="";
     let artist="";
     let youTubeId="";
-    console.log("here is the edit song modal");
 
     if(store.currentList.songs[0]){
         index=Number(store.songMarkedForEdition);

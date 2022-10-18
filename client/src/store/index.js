@@ -103,7 +103,7 @@ export const useGlobalStore = () => {
            case GlobalStoreActionType.MARK_LIST_FOR_DELETION: {
                 return setStore({
                     idNamePairs: store.idNamePairs,
-                    currentList: null,
+                    currentList: store.currentList,
                     newListCounter: store.newListCounter,
                     listNameActive: false,
                     listMarkedForDeletion:payload,
@@ -305,7 +305,6 @@ export const useGlobalStore = () => {
     store.showDeleteListModal = function(){
         let modal = document.getElementById("delete-list-modal");
         modal.classList.add("is-visible");
-        console.log("current list: "+store.currentList);
     }
     store.hideDeleteListModal=function(){
         let modal = document.getElementById("delete-list-modal");

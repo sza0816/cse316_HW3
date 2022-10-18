@@ -4,11 +4,13 @@ import { GlobalStoreContext } from '../store'
 function DeleteListModal(){
     const { store } = useContext(GlobalStoreContext);
     let name="";
-    if (store.currentList) {
-        name = store.currentList.name;
-        
+    let index=store.listMarkedForDeletion;
+    for(let i=0;i<store.idNamePairs.length;i++){
+        if(store.idNamePairs[i]._id===index){
+            name=store.idNamePairs[i].name;
+        }
     }
-    console.log("playlist name: "+name);
+
     function deleteListCallback(event){
         store.deleteMarkedList();
     }

@@ -257,6 +257,11 @@ display: flex;
 flex-direction: column;
 }
 
+span {
+  font-weight: bold;
+  font-style: italic;
+}
+
 /* ---------------style for edit song modal------------- */
 .center-content-box{
   display: flex;

@@ -5,7 +5,7 @@ import EditSongModal from './EditSongModal';
 
 function SongCard(props) {
     const { store } = useContext(GlobalStoreContext);
-
+    const [draggedTo, setDraggedTo] = useState(0);
     const { song, index } = props;
     let cardClass = "list-card unselected-list-card";
 
@@ -21,7 +21,6 @@ function SongCard(props) {
         }
     }
     function handleDoubleClick(event){
-        console.log("handles double click.");
         event.stopPropagation();
         if(event.detail===2 && !event.target.disabled){
             let _id=event.target.id;
@@ -33,12 +32,52 @@ function SongCard(props) {
         }  
     }
 
+    //handle dragging a song
+    function handleDragStart(event) {
+        event.dataTransfer.setData("item", event.target.id);
+    }
+
+    function handleDragOver(event) {
+        event.preventDefault();
+    }
+
+    function handleDragEnter(event) {
+        event.preventDefault();
+        setDraggedTo(true);
+    }
+
+    function handleDragLeave(event) {
+        event.preventDefault();
+        setDraggedTo(false);
+    }
+
+    function handleDrop(event) {
+        event.preventDefault();
+        let target = event.target;
+        let targetId = target.id;
+        targetId = targetId.substring(target.id.indexOf("-") + 1,target.id.indexOf("-") + 2);
+        let sourceId = event.dataTransfer.getData("item");
+        sourceId = sourceId.substring(sourceId.indexOf("-") + 1, sourceId.indexOf("-") + 2);
+        setDraggedTo(false);
+
+        store.addMoveSongTransaction(sourceId, targetId);
+    }
+
+    if(draggedTo){
+        cardClass="list-card-dragged-to unselected-list-card";
+    }
     return (
         <div
             key={index}
             id={'song-' + index + '-card'}
             className={cardClass}
             onClick={handleDoubleClick}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            draggable="true"
         >
             {index + 1}.
             <a

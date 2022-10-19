@@ -1,6 +1,7 @@
 import AddSong_Transaction from '../transactions/AddSong_Transaction';
 import RemoveSong_Transaction from '../transactions/RemoveSong_Transaction';
 import EditSong_Transaction from '../transactions/EditSong_Transaction';
+import MoveSong_Transaction from '../transactions/MoveSong_Transaction';
 
 import { createContext, useState } from 'react'
 import jsTPS from '../common/jsTPS'
@@ -306,7 +307,7 @@ export const useGlobalStore = () => {
         let modal = document.getElementById("delete-list-modal");
         modal.classList.add("is-visible");
     }
-    store.hideDeleteListModal=function(){
+    store.hideDeleteListModal = function(){
         let modal = document.getElementById("delete-list-modal");
         modal.classList.remove("is-visible");
         storeReducer({
@@ -398,6 +399,64 @@ export const useGlobalStore = () => {
         store.hideRemoveSongModal();
         return oldSong;
     }
+
+    store.addMoveSongTransaction=function(start, end){
+        let transaction=new MoveSong_Transaction(store, start, end);
+        tps.addTransaction(transaction);
+        console.log("enters add move song trans");
+    }
+
+    // store.moveSong=function(start, end){
+    //     console.log(start, end);
+    //     // start -= 1;
+    //     // end -= 1;
+    //     console.log(store.currentList.songs);
+    //     if (start < end) {
+    //         let temp=Number(end);
+    //         end=Number(start);
+    //         start=temp;
+
+    //         start=String(start);
+    //         end=String(end);
+    //         console.log("switch start and end: ",start,end);
+    //     }
+    //     if (start > end) {
+    //         let temp = store.currentList.songs[start];
+    //         for (let i = start; i > end; i--) {
+    //             store.currentList.songs[i] = store.currentList.songs[i - 1];
+    //         }
+    //         store.currentList.songs[end] = temp;
+    //     }
+    //     console.log(store.currentList.songs);
+    //     // NOW MAKE IT OFFICIAL
+    //     store.updateCurrentList();
+    // }
+
+    store.moveSong = function(start, end){
+        let list = store.currentList;
+
+        if (start < end) {
+            console.log("start < end");
+            let temp = list.songs[start];
+            console.log(temp);
+            for (let i = start; i < end; i++) {
+                list.songs[i] = list.songs[i + 1];
+                console.log(list.songs);
+            }
+            list.songs[end] = temp;
+        }
+        else if (start > end) {
+            console.log("start > end");
+            let temp = list.songs[start];
+            for (let i = start; i > end; i--) {
+                list.songs[i] = list.songs[i - 1];
+            }
+            list.songs[end] = temp;
+        }
+
+        store.updateCurrentList();
+    }
+
     store.undo = function () {
         tps.undoTransaction();
     }
@@ -479,6 +538,28 @@ export const useGlobalStore = () => {
             payload: null
         });
     }
+
+    store.keyControl=function(event){
+        if (event.ctrlKey){
+            //control-z is for undo
+            if(event.key==='z'){
+                console.log("undo key pressed");
+                if(tps.hasTransactionToUndo()){
+                    tps.undoTransaction();
+                }
+                event.preventDefault();
+            }
+            else if (event.key==='y'){
+                if(tps.hasTransactionToRedo()){
+                    tps.doTransaction();
+                }
+            }
+            else if(event.keyCode===86){
+                store.toggleUseVerboseFeedback();
+            }
+        }
+    }
+
     // THIS GIVES OUR STORE AND ITS REDUCER TO ANY COMPONENT THAT NEEDS IT
     return { store, storeReducer };
 }

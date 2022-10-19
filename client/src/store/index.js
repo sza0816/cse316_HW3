@@ -264,7 +264,8 @@ export const useGlobalStore = () => {
 
     store.createNewList=function(){
         async function asyncCreateNewList(){
-            let newListTitle="Untitled"+store.newListCounter;
+            //+store.newListCounter
+            let newListTitle="Untitled";
             let payload={name:newListTitle,songs:[]};
             const response=await api.createPlaylist(payload);
             if(response.data.success){
@@ -406,55 +407,15 @@ export const useGlobalStore = () => {
         console.log("enters add move song trans");
     }
 
-    // store.moveSong=function(start, end){
-    //     console.log(start, end);
-    //     // start -= 1;
-    //     // end -= 1;
-    //     console.log(store.currentList.songs);
-    //     if (start < end) {
-    //         let temp=Number(end);
-    //         end=Number(start);
-    //         start=temp;
-
-    //         start=String(start);
-    //         end=String(end);
-    //         console.log("switch start and end: ",start,end);
-    //     }
-    //     if (start > end) {
-    //         let temp = store.currentList.songs[start];
-    //         for (let i = start; i > end; i--) {
-    //             store.currentList.songs[i] = store.currentList.songs[i - 1];
-    //         }
-    //         store.currentList.songs[end] = temp;
-    //     }
-    //     console.log(store.currentList.songs);
-    //     // NOW MAKE IT OFFICIAL
-    //     store.updateCurrentList();
-    // }
-
-    store.moveSong = function(start, end){
-        let list = store.currentList;
-
-        if (start < end) {
-            console.log("start < end");
-            let temp = list.songs[start];
-            console.log(temp);
-            for (let i = start; i < end; i++) {
-                list.songs[i] = list.songs[i + 1];
-                console.log(list.songs);
-            }
-            list.songs[end] = temp;
+    store.moveSong=function(start, end){
+        let temp=store.currentList.songs[start];
+        let tempArray;
+        if (store.currentList.songs) {
+            tempArray = store.currentList.songs.filter((song, index) => index !== Number(start));
+            tempArray.splice(end, 0, temp)
+            store.currentList.songs = tempArray;
+            store.updateCurrentList();
         }
-        else if (start > end) {
-            console.log("start > end");
-            let temp = list.songs[start];
-            for (let i = start; i > end; i--) {
-                list.songs[i] = list.songs[i - 1];
-            }
-            list.songs[end] = temp;
-        }
-
-        store.updateCurrentList();
     }
 
     store.undo = function () {
